@@ -1,37 +1,34 @@
 import React from 'react';
-import { Box, Text, Flex, IconButton } from '@chakra-ui/react';
+import { Box, Text, IconButton } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 
-const NoteCard = ({ note, onSelectNote, onDeleteNote, onUpdateNote }) => {
+const NoteCard = ({ note, onDelete, onEdit, isSidebar }) => {
   return (
     <Box
-      border="1px"
-      borderRadius="md"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
       p={4}
-      cursor="pointer"
-      bg="white"
-      _hover={{ bg: "gray.100" }}
-      mb={2}
+      mb={4}
+      bg={isSidebar ? "linear-gradient(to right, #2d3748 0%, #eff8ff 100%)" : "white"}
+      boxShadow={isSidebar ? "none" : "lg"}
+      border={isSidebar ? "none" : "2px"}
+      borderColor={isSidebar ? "transparent" : "gray.800"}
     >
-      <Flex justify="space-between" align="center">
-        <Box onClick={() => onSelectNote(note)}>
-          <Text fontWeight="bold" color="black">{note.title}</Text>
-          <Text color="black">{note.content}</Text>
-        </Box>
-        <Flex>
-          <IconButton
-            icon={<EditIcon />}
-            size="sm"
-            mr={2}
-            onClick={() => onUpdateNote(note)}
-          />
-          <IconButton
-            icon={<DeleteIcon />}
-            size="sm"
-            onClick={() => onDeleteNote(note.id)}
-          />
-        </Flex>
-      </Flex>
+      <Text fontWeight="bold">{note.title}</Text>
+      {isSidebar ? (
+        <Text mt={2} isTruncated>{note.description}</Text>
+      ) : (
+        <>
+          <Text mt={2}>{note.description}</Text>
+          <Text fontSize="sm" mt={2} color="gray.500">Created by: {note.createdBy}</Text>
+          <Text fontSize="sm" color="gray.500">Date: {new Date(note.createdAt).toLocaleString()}</Text>
+        </>
+      )}
+      <Box mt={2}>
+        <IconButton icon={<EditIcon />} size="sm" mr={2} onClick={() => onEdit(note)} />
+        <IconButton icon={<DeleteIcon />} size="sm" onClick={() => onDelete(note.id)} />
+      </Box>
     </Box>
   );
 };

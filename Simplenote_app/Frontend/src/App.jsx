@@ -130,20 +130,18 @@
 
 
 import React from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
 import { NotesProvider } from './context/NotesContext';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import PrivateRoute from './components/Auth/privateRoute';
 import NotFound from './pages/NotFound';
-import { Box, Flex, Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
-import { HamburgerIcon } from '@chakra-ui/icons';
+import { Box } from '@chakra-ui/react';
 import Navbar from './components/Navbar';
 import './App.css';
 
-// Assuming that Navbar is already a separate component
 const App = () => {
   return (
     <AuthProvider>

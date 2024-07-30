@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Box, Flex, IconButton, VStack } from '@chakra-ui/react';
+import { Box, Flex, IconButton } from '@chakra-ui/react';
 import NoteCardList from '../pages/NoteCardList';
 import NoteEditor from '../components/NoteEditor';
 import { AddIcon } from '@chakra-ui/icons';
 import { useNotes } from '../context/NotesContext';
+import NoteModal from '../pages/NoteModal';
 import './Home.css';
 
 const Home = () => {
   const [selectedNote, setSelectedNote] = useState(null);
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const { deleteNote, updateNote } = useNotes();
+  const { notes, deleteNote, updateNote, addNote } = useNotes();
 
   const handleSelectNote = (note) => {
     setSelectedNote(note);
@@ -30,13 +31,22 @@ const Home = () => {
     setIsEditorOpen(true);
   };
 
+  const handleSaveNote = (note) => {
+    if (note.id) {
+      updateNote(note);
+    } else {
+      addNote(note);
+    }
+  };
+
   return (
     <Flex className="home" height="100vh">
       <Box className="sidebar" width={{ base: "100%", md: "25%" }} bg="gray.900" p={4}>
         <NoteCardList
-          onSelectNote={handleSelectNote}
+          notes={notes}
           onDeleteNote={handleDeleteNote}
           onUpdateNote={handleUpdateNote}
+          isSidebar
         />
         <IconButton
           icon={<AddIcon />}
@@ -50,8 +60,18 @@ const Home = () => {
         />
       </Box>
       <Box className="main" width={{ base: "100%", md: "75%" }} p={4}>
-        {isEditorOpen && <NoteEditor note={selectedNote} />}
+        <NoteCardList
+          notes={notes}
+          onDeleteNote={handleDeleteNote}
+          onUpdateNote={handleUpdateNote}
+        />
       </Box>
+      <NoteModal
+        isOpen={isEditorOpen}
+        onClose={() => setIsEditorOpen(false)}
+        note={selectedNote}
+        onSave={handleSaveNote}
+      />
     </Flex>
   );
 };

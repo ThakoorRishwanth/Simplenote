@@ -1,20 +1,17 @@
 import React from 'react';
-import { useNotes } from '../context/NotesContext';
-import NoteCard from './NoteCard';
 import { VStack } from '@chakra-ui/react';
+import NoteCard from './NoteCard';
 
-const NoteCardList = ({ onSelectNote, onDeleteNote, onUpdateNote }) => {
-  const { notes } = useNotes();
-
+const NoteCardList = ({ notes, onDeleteNote, onUpdateNote, isSidebar }) => {
   return (
-    <VStack spacing={3} align="stretch">
+    <VStack spacing={4} align="stretch">
       {notes.map((note) => (
         <NoteCard
           key={note.id}
           note={note}
-          onSelectNote={onSelectNote}
-          onDeleteNote={onDeleteNote}
-          onUpdateNote={onUpdateNote}
+          onDelete={onDeleteNote}
+          onEdit={onUpdateNote}
+          isSidebar={isSidebar}
         />
       ))}
     </VStack>
