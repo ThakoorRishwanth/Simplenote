@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Box, Flex, IconButton } from '@chakra-ui/react';
-import NoteCardList from '../pages/NoteCardList';
+import { Box, Flex, IconButton, Text, Center } from '@chakra-ui/react';
+import NoteCardList from './NoteCardList';
 import NoteEditor from '../components/NoteEditor';
 import { AddIcon } from '@chakra-ui/icons';
 import { useNotes } from '../context/NotesContext';
@@ -37,6 +37,7 @@ const Home = () => {
     } else {
       addNote(note);
     }
+    setIsEditorOpen(false);
   };
 
   return (
@@ -60,11 +61,19 @@ const Home = () => {
         />
       </Box>
       <Box className="main" width={{ base: "100%", md: "75%" }} p={4}>
-        <NoteCardList
-          notes={notes}
-          onDeleteNote={handleDeleteNote}
-          onUpdateNote={handleUpdateNote}
-        />
+        {notes.length === 0 ? (
+          <Center height="100%">
+            <Text fontSize="xl" color="gray.500" textAlign="center">
+              No notes available. Click the plus icon to create a new note and get started.
+            </Text>
+          </Center>
+        ) : (
+          <NoteCardList
+            notes={notes}
+            onDeleteNote={handleDeleteNote}
+            onUpdateNote={handleUpdateNote}
+          />
+        )}
       </Box>
       <NoteModal
         isOpen={isEditorOpen}
